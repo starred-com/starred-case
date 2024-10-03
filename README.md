@@ -1,13 +1,79 @@
-# Prerequisites
-node v19.*
-npm
+# Starred application case
 
-# Instructions
-1) run "cd ./case" 
-2) Run "npm install"
-3) Run "npm run init" this will reset & reseed the local DB
-4) Now run "npm start" or "npm run dev" to start an expressjs server on localhost:3000
+Welcome to the Starred application case. This case is part of the application process here at Starred as we believe that actions speak louder than words!
 
-# API Resources
-- /users (GET) [Returns a list of all users]
-- /jobs (GET) [Returns a list of all jobs]
+The case is based on two tasks: a coding task, and an architecture diagram task.
+
+We're looking forward to seeing your solutions!
+
+## Expectations
+
+We trust that you know how to code, but we want to throw you into a situation similar to what you would do in this role. Use this task to show us **how** you write code, solve problems and most importantly, how you think.
+
+We know your time is valuable, so we don't expect you to spend more than 2 hours on this task.
+
+If we meet to discuss the case, we will ask you to present your solution in these regards:
+
+- What did you implement
+- How did you go about solving the task at hand
+- What you prioritised
+- What you would have done if you had more time
+- Describe the architecture diagram you brought
+
+## The coding task
+
+Starred.com is a candidate-centric recruitment platform where candidates can find new opportunities, practice for interviews and track their recruitment progress. In this task you will build an primitive version of job searching and reporting about what jobs candidates search for.
+
+See the next section for the description of a starting codebase and endpoint that you can use. However remember that it's there to get you started, so if you feel like doing it your own way simply go ahead.
+
+> [!NOTE]
+> There's some "requirements" listed below, some of which are marked optional in terms of feature completeness. You should treat all of them as optional and focus on the parts you think are the most important, or will let you show your skills the most.
+
+There will be two types of actors/users in this system: candidates and administrators. Each of them have different actions they need to perform:
+
+**Requirements for candidate users**
+
+- Users should be able to browse job opportunities which include job titles, descriptions and company names
+- Users should be able to search by job title to narrow down the results
+- Users should **not** be able to see information available to administrator users
+- (Optional)Users should be able to "favourite" the jobs they found interesting. Favouriting a job should let users easily find it again
+- (Optional)Any other functionality that you think would help candidates find relevant opportunities
+
+**Requirements for administrator users**
+
+- Administrators should be able to see what jobs candidates have searched for
+- (Optional) Administrators should be able to see the top 5 jobs in terms of how many times they were searched for
+
+While both use cases imply some sort of authentication, we don't believe this is the most interesting problem for you to solve, so you can use a primitive version, mock it or simply describe how you would have done it.
+
+### Starter project
+
+The starter project has three components to it: a frontend, basic backend and an external endpoint. As mentioned before, this is intended to help you get started. _You can change any part of it or completely ignore this project and setup your own instead._
+
+The provided components are:
+
+- Nuxt.js v3/Tailwindcss frontend boilerplate with a couple of stylized components
+- Express.js backend in the `./backend` folder which starts an HTTP server and connects to an SQLite database. By default it will start on port 3000 and will only have a single endpoint `/users` which will return a list of users from the database.
+- An external service that provides endpoints to list jobs, get jobs by ID and to search for job IDs based on a job title. You should only communicate with this endpoint using `application/json` content type. It may return errors(for example in case of invalid query provided) in which case you will receive a response with a HTTP 4xx code and the body will contain an `error` attribute. The available endpoints are:
+  - `GET https://yon9jygrt9.execute-api.eu-west-1.amazonaws.com/prod/jobs` - a paginated list of all available jobs. To query a particular page, include the `page=<number>` query parameter
+  - `GET https://yon9jygrt9.execute-api.eu-west-1.amazonaws.com/prod/jobs/<number>` - a specific job. Replace the `<number>` in the path with the job ID retrieved from one of the other endpoints
+  - `POST https://yon9jygrt9.execute-api.eu-west-1.amazonaws.com/prod/jobs/recommendations` - returns the recommended job IDs based on the query that should be specified as the JSON request payload in the form of `{"jobTitle": "<your-query-here>"}`.
+
+#### Prerequisites
+
+We tested this project with node version 20 and `npm` as the package manager, but others might work too.
+
+#### Starting the project
+
+2. Run `npm install`
+3. Run `db:reset` to reset & reseed the local SQLite database
+4. Run `npm server:start` `npm run server:dev` to start an expressjs server on localhost:3000
+5. In a separate terminal window, run the Nuxt dev environment with `npm run client:dev`
+
+## Architecture diagram task
+
+While the coding task gives us the opportunity to have a discussion about your choices, we know you're probably used to working with bigger tasks. To avoid asking you to develop real features for us, instead we ask you to bring an architecture drawing of a solution you are proud of. Ideally something that is still fresh in your mind, so you don't have to spend hours creating it.
+
+The contents and scope of the diagram are entirely up to you: if the solution contains too many moving parts you can keep it simple by outlining only the most important parts and then walking us through it later, alternatively if you enjoy creating diagrams, you can also cover every aspect of the solution.
+
+We use various tools for diagrams internally such as FigJam, Google Slides and https://draw.io. You can use one of these or sometihng you're more acustom to.
