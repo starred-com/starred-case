@@ -65,4 +65,4 @@ While the coding task gives us the opportunity to have a discussion about your c
 
 The contents and scope of the diagram are entirely up to you: if the solution contains too many moving parts you can keep it simple by outlining only the most important parts and then walking us through it later, alternatively if you enjoy creating diagrams, you can also cover every aspect of the solution.
 
-We use various tools for diagrams internally such as FigJam, Google Slides and https://draw.io. You can use one of these or sometihng you're more acustom to.
+We use various tools for diagrams internally such as FigJam, Google Slides and https://draw.io. You can use one of these or something you're more acustom to.
