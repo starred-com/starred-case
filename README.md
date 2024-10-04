@@ -26,25 +26,14 @@ Starred.com is a candidate-centric recruitment platform where candidates can fin
 
 See the next section for the description of a starting codebase and endpoint that you can use. However remember that it's there to get you started, so if you feel like doing it your own way simply go ahead.
 
-> [!NOTE]
-> There's some "requirements" listed below, some of which are marked optional in terms of feature completeness. You should treat all of them as optional and focus on the parts you think are the most important, or will let you show your skills the most.
+You'll be implementing functionality for the candidates. The bullet points are intended as user actions so it is up to you how far(or not) you want to go with each point. 
 
-There will be two types of actors/users in this system: candidates and administrators. Each of them have different actions they need to perform:
+**Requirements for candidates**
 
-**Requirements for candidate users**
-
-- Users should be able to browse job opportunities which include job titles, descriptions and company names
-- Users should be able to search by job title to narrow down the results
-- Users should **not** be able to see information available to administrator users
-- (Optional)Users should be able to "favourite" the jobs they found interesting. Favouriting a job should let users easily find it again
-- (Optional)Any other functionality that you think would help candidates find relevant opportunities
-
-**Requirements for administrator users**
-
-- Administrators should be able to see what jobs candidates have searched for
-- (Optional) Administrators should be able to see the top 5 jobs in terms of how many times they were searched for
-
-While both use cases imply some sort of authentication, we don't believe this is the most interesting problem for you to solve, so you can use a primitive version, mock it or simply describe how you would have done it.
+- Candidates should be able to browse job opportunities which include job titles, descriptions and company names
+- Candidates should be able to search by job title to narrow down the results
+- Candidates should be able to "favourite" the jobs they found interesting. Favouriting a job should let users easily find it again
+- (Nice to)Any other functionality that you think would help candidates find relevant opportunities
 
 ### Starter project
 
