@@ -40,15 +40,6 @@ function reset() {
 }
 
 function seed() {
-  let stmt = db.prepare("INSERT INTO job (title, description, type, area, state, streetAddress) VALUES (?, ?, ?, ?, ?, ?)");
-
-  const jobs = generateJobs(10);
-
-  jobs.forEach(job => {
-    stmt.run(job.title, job.description, job.type, job.area, job.state, job.streetAddress);
-  });
-  stmt.finalize();
-
   const users = generateUsers(10);
   stmt = db.prepare("INSERT INTO user (firstName, lastName, email, password, salt) VALUES (?, ?, ?, ?, ?)");
   users.forEach(user => {
