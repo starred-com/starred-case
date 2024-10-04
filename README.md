@@ -12,7 +12,7 @@ We trust that you know how to code, but we want to throw you into a situation si
 
 We know your time is valuable, so we don't expect you to spend more than 2 hours on this task.
 
-If we meet to discuss the case, we will ask you to present your solution in these regards:
+When we meet to discuss the case, we will ask you to present your solution in these regards:
 
 - What did you implement
 - How did you go about solving the task at hand
