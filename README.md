@@ -35,6 +35,10 @@ You'll be implementing functionality for the candidates. The bullet points are i
 - Candidates should be able to "favourite" the jobs they found interesting. Favouriting a job should let users easily find it again
 - (Nice to)Any other functionality that you think would help candidates find relevant opportunities
 
+## Delivery of the project
+
+Once you're done submit either a zip/rar file with your codebase (you might want to exclude `node_modules`) and your instructions to us for how to run it. Alternatively fork the repository and submit the link
+
 ### Starter project
 
 The starter project has three components to it: a frontend, basic backend and an external endpoint. As mentioned before, this is intended to help you get started. _You can change any part of it or completely ignore this project and setup your own instead._
