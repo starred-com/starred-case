@@ -37,7 +37,7 @@ You'll be implementing functionality for the candidates. The bullet points are i
 
 ## Delivery of the project
 
-Once you're done submit either a zip/rar file with your codebase(you might want to exclude `node_modules`) and your instructions to us for how to run it. Alternatively fork the repository and submit the link
+Once you're done submit either a zip/rar file with your codebase (you might want to exclude `node_modules`) and your instructions to us for how to run it. Alternatively fork the repository and submit the link
 
 ### Starter project
 
