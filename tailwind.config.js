@@ -1,45 +1,10 @@
-const colors = {
-  gray: {
-    0: '#FFFFFF',
-    10: '#FDFDFD',
-    20: '#F8F8F8',
-    30: '#E4E4E4',
-    40: '#C5C5C5',
-    50: '#9F9F9F',
-    60: '#757575',
-    70: '#525151',
-    80: '#323131',
-    90: '#1B1A1A',
-    100: '#0B0B0B',
-    110: '#000000'
-  },
-  green: {
-    10: '#DEF7E8',
-    20: '#BBEED0',
-    30: '#71DB9D',
-    40: '#27C468',
-    50: '#21A658',
-    60: '#1B8849',
-    70: '#166C3A',
-    80: '#10512B',
-    90: '#0B381E',
-    100: '#062011'
-  },
-  lightGreen: {
-    10: '#EEFFE5',
-    20: '#DAFFC6',
-    30: '#B0F8B0',
-    40: '#A2F2B7',
-    50: '#8CECB1',
-    60: '#73E6AA',
-    70: '#60BE8E',
-    80: '#2D5B49',
-    90: '#162A29',
-    100: '#102120'
-  },
-}
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     colors: {
       transparent: 'transparent',
