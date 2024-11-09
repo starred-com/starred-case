@@ -1,3 +1,4 @@
+import { QueryProvider } from '@/providers/query-provider';
 import type { Metadata } from 'next'
 import { Roboto_Flex } from 'next/font/google'
 import './globals.css'
@@ -16,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   )
 } 

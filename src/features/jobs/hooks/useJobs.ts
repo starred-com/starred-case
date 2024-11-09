@@ -1,91 +1,88 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-interface Job {
-  id: number;
-  title: string;
-  description: string;
-  company: string;
-}
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
+import { Job, JobsResponse } from '@/types';
+import { getJobs, searchJobs } from '@/lib/api';
 
 interface UseJobsProps {
-  page?: number;
-  searchQuery?: string;
+  initialData?: JobsResponse;
 }
 
-const API_BASE_URL = 'https://yon9jygrt9.execute-api.eu-west-1.amazonaws.com/prod';
+export const useJobs = ({ initialData }: UseJobsProps = {}) => {
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [searchValue, setSearchValue] = useState("");
 
-export const useJobs = ({ page = 1, searchQuery }: UseJobsProps = {}) => {
-  const queryClient = useQueryClient();
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  }, []);
 
-  // Fetch jobs
-  const jobsQuery = useQuery<Job[], Error>({
-    queryKey: ['jobs', page] as const,
-    queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/jobs?page=${page}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch jobs');
+  // Fetch jobs with infinite scroll
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error
+  } = useInfiniteQuery({
+    queryKey: ['jobs', searchValue],
+    initialPageParam: 0,
+    queryFn: ({ pageParam = 0 }) => 
+      searchValue ? searchJobs(searchValue) : getJobs(pageParam),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.pagination.currentPage < lastPage.pagination.lastPage) {
+        return lastPage.pagination.currentPage + 1;
       }
-      return response.json();
+      return undefined;
     },
-    enabled: !searchQuery,
+    initialData: {
+      pages: [initialData],
+      pageParams: [0],
+    },
   });
 
-  // Search jobs
-  const searchMutation = useMutation<Job[], Error, string>({
-    mutationFn: async (jobTitle: string) => {
-      const response = await fetch(`${API_BASE_URL}/jobs/recommendations`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobTitle }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to search jobs');
-      }
-      return response.json();
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(['jobs', page], data);
-    },
-  });
-
-  // Manage favorites
-  const favoritesQuery = useQuery<number[], Error>({
-    queryKey: ['favorites'] as const,
-    queryFn: () => {
+  // Favorites management
+  const [favorites, setFavorites] = useState<number[]>(() => {
+    if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('jobFavorites');
       return stored ? JSON.parse(stored) : [];
-    },
+    }
+    return [];
   });
 
-  const toggleFavoriteMutation = useMutation<number[], Error, number>({
-    mutationFn: async (jobId: number) => {
-      const currentFavorites = favoritesQuery.data ?? [];
-      const newFavorites = currentFavorites.includes(jobId)
-        ? currentFavorites.filter((id) => id !== jobId)
-        : [...currentFavorites, jobId];
-      
+  const toggleFavorite = useCallback((jobId: number) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(jobId)
+        ? prev.filter(id => id !== jobId)
+        : [...prev, jobId];
       localStorage.setItem('jobFavorites', JSON.stringify(newFavorites));
       return newFavorites;
-    },
-    onSuccess: (newFavorites) => {
-      queryClient.setQueryData(['favorites'], newFavorites);
-    },
-  });
+    });
+  }, []);
+
+  // Flatten jobs from all pages
+  const jobs = data?.pages.flatMap(page => page.data) ?? [];
+
+  // Set initial selected job
+  useEffect(() => {
+    if (jobs.length > 0 && !selectedJob) {
+      setSelectedJob(jobs[0]);
+    }
+  }, [jobs, selectedJob]);
 
   return {
-    // Jobs data and status
-    jobs: jobsQuery.data ?? [],
-    isLoading: jobsQuery.isLoading,
-    error: jobsQuery.error,
-
-    // Search functionality
-    searchJobs: searchMutation.mutate,
-    isSearching: searchMutation.isPending,
-    searchError: searchMutation.error,
-
-    // Favorites functionality
-    favorites: favoritesQuery.data ?? [],
-    toggleFavorite: toggleFavoriteMutation.mutate,
-    isTogglingFavorite: toggleFavoriteMutation.isPending,
+    jobs,
+    selectedJob,
+    setSelectedJob,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    favorites,
+    toggleFavorite,
+    searchValue,
+    handleSearch,
   };
 };
