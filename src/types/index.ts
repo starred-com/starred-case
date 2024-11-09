@@ -13,3 +13,12 @@ export interface JobsResponse {
   };
   data: Job[];
 } 
+
+
+export interface SearchJobsResponse {
+  jobIds: number[];
+  searchQuery: {
+    jobTitle: string;
+  }
+}
+

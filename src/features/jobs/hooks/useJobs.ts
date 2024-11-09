@@ -1,7 +1,7 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { Job, JobsResponse } from '@/types';
-import { getJobs, searchJobs } from '@/lib/api';
+import { getJobs, searchJobs } from '@/lib/api/client';
 
 interface UseJobsProps {
   initialData?: JobsResponse;
@@ -10,12 +10,21 @@ interface UseJobsProps {
 export const useJobs = ({ initialData }: UseJobsProps = {}) => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [searchValue, setSearchValue] = useState("");
+  const [searchResults, setSearchResults] = useState<Job[]>([]);
 
-  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+  const handleSearch = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    
+    if (value.trim()) {
+      const results = await searchJobs(value);
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
   }, []);
 
-  // Fetch jobs with infinite scroll
+  // Fetch jobs with infinite scroll (only when not searching)
   const {
     data,
     fetchNextPage,
@@ -25,20 +34,20 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
     isError,
     error
   } = useInfiniteQuery({
-    queryKey: ['jobs', searchValue],
+    queryKey: ['jobs'],
     initialPageParam: 0,
-    queryFn: ({ pageParam = 0 }) => 
-      searchValue ? searchJobs(searchValue) : getJobs(pageParam),
+    queryFn: ({ pageParam = 0 }) => getJobs(pageParam),
     getNextPageParam: (lastPage) => {
       if (lastPage.pagination.currentPage < lastPage.pagination.lastPage) {
         return lastPage.pagination.currentPage + 1;
       }
       return undefined;
     },
-    initialData: {
+    initialData: initialData ? {
       pages: [initialData],
       pageParams: [0],
-    },
+    } : undefined,
+    enabled: !searchValue, // Only enable when not searching
   });
 
   // Favorites management
@@ -60,8 +69,8 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
     });
   }, []);
 
-  // Flatten jobs from all pages
-  const jobs = data?.pages.flatMap(page => page.data) ?? [];
+  // Use search results if available, otherwise use infinite scroll data
+  const jobs = searchValue ? searchResults : (data?.pages.flatMap(page => page.data) ?? []);
 
   // Set initial selected job
   useEffect(() => {
@@ -78,7 +87,7 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
     isError,
     error,
     fetchNextPage,
-    hasNextPage,
+    hasNextPage: searchValue ? false : hasNextPage,
     isFetchingNextPage,
     favorites,
     toggleFavorite,
