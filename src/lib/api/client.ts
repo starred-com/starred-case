@@ -16,7 +16,7 @@ export async function getJobs(page: number = 0): Promise<JobsResponse> {
 }
 
 export async function searchJobs(jobTitle: string): Promise<Job[]> {
-  const response = await fetch(`/api/jobs/recommendations`, {
+  const response = await fetch(`/api/jobs/search`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ jobTitle }),

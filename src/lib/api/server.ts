@@ -1,4 +1,6 @@
-import { JobsResponse, Job } from "@/types";
+'use server';
+
+import { JobsResponse, Job, SearchJobsResponse } from "@/types";
 
 /**
  * This file contains API functions that should only be used in server-side code.
@@ -7,11 +9,11 @@ import { JobsResponse, Job } from "@/types";
 
 const API_BASE_URL = 'https://yon9jygrt9.execute-api.eu-west-1.amazonaws.com/prod';
 
-export async function getInitialJobs(): Promise<JobsResponse> {
-  const response = await fetch(`${API_BASE_URL}/jobs`);
+export async function getJobs(page: number): Promise<JobsResponse> {
+  const response = await fetch(`${API_BASE_URL}/jobs?page=${page}`);
   console.log('response', response);
   if (!response.ok) {
-    throw new Error('Failed to fetch initial jobs');
+    throw new Error('Failed to fetch jobs');
   }
   return response.json();
 }
@@ -30,3 +32,12 @@ export async function getJobDetailsForSearch(jobIds: number[]): Promise<Job[]> {
   );
   return jobDetails;
 } 
+
+export async function getJobRecommendations(body: { jobTitle: string }): Promise<SearchJobsResponse> {
+  const response = await fetch(`${API_BASE_URL}/jobs/recommendations`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return response.json();
+}

@@ -1,10 +1,10 @@
 import Jobs from "@/features/jobs";
-import { getInitialJobs } from '@/lib/api/server';
+import { getJobs } from "@/lib/api/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const initialData = await getInitialJobs(); // SSR first page
+  const initialData = await getJobs(0); // SSR first page
 
   return (
     <main className="min-h-screen p-8">
