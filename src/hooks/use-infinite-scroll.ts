@@ -51,8 +51,13 @@ export function useInfiniteScroll<TData>({
   );
 
   useEffect(() => {
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = undefined;
+    }
+
     const element = lastElementRef.current;
-    if (!element) return;
+    if (!element || !enabled) return;
 
     observerRef.current = new IntersectionObserver(handleObserver, {
       threshold: 0.5,
@@ -65,7 +70,7 @@ export function useInfiniteScroll<TData>({
         observerRef.current.disconnect();
       }
     };
-  }, [handleObserver]);
+  }, [handleObserver, enabled]);
 
   return {
     data,
