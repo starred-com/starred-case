@@ -1,14 +1,5 @@
-import Jobs from "@/features/jobs";
-import { getJobs } from "@/lib/api/server";
+import { redirect } from 'next/navigation';
 
-export const dynamic = "force-dynamic";
-
-export default async function Home() {
-  const initialData = await getJobs(0); // SSR first page
-
-  return (
-    <main className="min-h-screen">
-      <Jobs initialData={initialData} />
-    </main>
-  );
+export default function Home() {
+  redirect('/jobs/all');
 } 
