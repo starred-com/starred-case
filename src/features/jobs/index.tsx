@@ -77,11 +77,7 @@ const Jobs = ({ initialData }: JobsProps) => {
           </div>
           
           <div className="hidden md:block">
-            {isLoading ? (
-              <div className="sticky top-4">
-                <JobCardSkeleton isDetailed />
-              </div>
-            ) : selectedJob ? (
+            {selectedJob && (
               <div className="sticky top-4">
                 <JobCard
                   title={selectedJob.job_title}
@@ -93,7 +89,7 @@ const Jobs = ({ initialData }: JobsProps) => {
                   isDetailed
                 />
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       )}

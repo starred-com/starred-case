@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Job, JobsResponse } from '@/types';
 import { getJobs, searchJobs } from '@/lib/api/client';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
@@ -11,7 +11,7 @@ interface UseJobsProps {
 
 export const useJobs = ({ initialData }: UseJobsProps = {}) => {
   // Core states
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(initialData?.data[0] ?? null);
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState<Job[]>([]);
 
