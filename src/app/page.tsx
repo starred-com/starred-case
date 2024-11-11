@@ -7,7 +7,7 @@ export default async function Home() {
   const initialData = await getJobs(0); // SSR first page
 
   return (
-    <main className="min-h-screen p-8">
+    <main className="min-h-screen">
       <Jobs initialData={initialData} />
     </main>
   );

@@ -4,6 +4,7 @@ import { getJobs, searchJobs } from '@/lib/api/client';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import debounce from 'lodash/debounce';
 import { useMutation } from '@tanstack/react-query';
+import { useToast } from "@/hooks/use-toast";
 
 interface UseJobsProps {
   initialData?: JobsResponse;
@@ -11,6 +12,7 @@ interface UseJobsProps {
 
 export const useJobs = ({ initialData }: UseJobsProps = {}) => {
   // Core states
+  const { toast } = useToast();
   const [selectedJob, setSelectedJob] = useState<Job | null>(initialData?.data[0] ?? null);
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState<Job[]>([]);
@@ -36,6 +38,13 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
       pageParams: [0],
     } : undefined,
     enabled: !searchValue.trim(),
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to fetch jobs. Please try again later.",
+      });
+    },
   });
 
   // Search mutation with debounce
@@ -45,8 +54,12 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
       setSearchResults(results);
     },
     onError: (error) => {
-      console.error('Search failed:', error);
       setSearchResults([]);
+      toast({
+        variant: "destructive",
+        title: "Search Failed",
+        description: "Failed to search jobs. Please try again.",
+      });
     }
   });
 

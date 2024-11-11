@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Star } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 
 interface JobCardProps {
   title: string
@@ -10,9 +11,7 @@ interface JobCardProps {
   isFavorite?: boolean
   isSelected?: boolean
   onFavorite?: () => void
-  onApply?: () => void
   onClick?: () => void
-  isDetailed?: boolean
 }
 
 export function JobCard({
@@ -22,33 +21,28 @@ export function JobCard({
   isFavorite,
   isSelected,
   onFavorite,
-  onApply,
   onClick,
-  isDetailed = false
 }: JobCardProps) {
   return (
-    <Card 
-      className={cn(
-        "transition-shadow hover:shadow-md cursor-pointer",
-        isDetailed ? "lg:min-h-[600px]" : "",
-        isSelected ? "ring-2 ring-primary" : ""
-      )}
-      onClick={onClick}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="p-[1px]"
     >
-      <CardHeader className="flex flex-row items-start justify-between space-y-0">
-        <div>
-          <CardTitle className="text-xl font-bold">{title}</CardTitle>
-          <p className="text-sm text-muted-foreground">{company}</p>
-        </div>
-        <div className="flex gap-2">
-          {onApply && (
-            <Button variant="default" onClick={(e) => {
-              e.stopPropagation();
-              onApply();
-            }}>
-              Apply
-            </Button>
-          )}
+      <Card 
+        className={cn(
+          "transition-all duration-200",
+          "cursor-pointer h-[200px]",
+          isSelected && "ring-1 ring-primary"
+        )}
+        onClick={onClick}
+      >
+        <CardHeader className="flex flex-row items-start justify-between space-y-0">
+          <div className="space-y-1">
+            <CardTitle className="text-xl font-bold leading-tight line-clamp-2">{title}</CardTitle>
+            <p className="text-sm text-muted-foreground font-medium">{company}</p>
+          </div>
           {onFavorite && (
             <Button
               variant="ghost"
@@ -57,16 +51,19 @@ export function JobCard({
                 e.stopPropagation();
                 onFavorite();
               }}
-              className={cn(isFavorite && "text-yellow-500")}
+              className={cn(
+                "transition-colors duration-200",
+                isFavorite && "text-yellow-500 hover:text-yellow-600"
+              )}
             >
               <Star className="h-4 w-4" />
             </Button>
           )}
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground">{description}</p>
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground leading-relaxed line-clamp-3">{description}</p>
+        </CardContent>
+      </Card>
+    </motion.div>
   )
 } 

@@ -2,6 +2,7 @@ import { QueryProvider } from '@/providers/query-provider';
 import type { Metadata } from 'next'
 import { Roboto_Flex } from 'next/font/google'
 import './globals.css'
+import { Toaster } from "@/components/ui/toaster"
 
 const roboto = Roboto_Flex({ subsets: ['latin'] })
 
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster />
       </body>
     </html>
   )

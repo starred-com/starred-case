@@ -10,6 +10,7 @@ interface UseInfiniteScrollOptions<TData> {
     pageParams: number[];
   };
   enabled?: boolean;
+  onError?: (error: Error) => void;
 }
 
 export function useInfiniteScroll<TData>({
@@ -18,6 +19,7 @@ export function useInfiniteScroll<TData>({
   getNextPageParam,
   initialData,
   enabled = true,
+  onError,
 }: UseInfiniteScrollOptions<TData>) {
   const observerRef = useRef<IntersectionObserver>();
   const lastElementRef = useRef<HTMLDivElement | null>(null);
@@ -30,15 +32,21 @@ export function useInfiniteScroll<TData>({
     isLoading,
     isError,
     error,
-    refetch
   } = useInfiniteQuery({
     queryKey,
     initialPageParam: 0,
     queryFn: ({ pageParam = 0 }) => queryFn(pageParam),
     getNextPageParam,
     initialData,
-    enabled,
+    enabled, 
   });
+
+  useEffect(() => {
+    if (isError && onError) {
+      onError(error);
+    }
+  }, [isError]);
+
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
