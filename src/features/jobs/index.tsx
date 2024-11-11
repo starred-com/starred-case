@@ -4,7 +4,7 @@ import { useJobs } from "./hooks/use-jobs";
 import { JobCard } from "../../components/ui/job-card";
 import { SearchHeader } from "../../components/ui/search-header";
 import { JobCardSkeleton } from "../../components/ui/job-card-skeleton";
-import { JobsResponse } from "@/types";
+import { Job, JobsResponse } from "@/types";
 import { cn } from "@/lib/utils";
 import { DetailedJobCard } from "../../components/ui/detailed-job-card";
 import { Confetti } from "@/components/ui/confetti";
@@ -13,10 +13,11 @@ import { toast } from "@/hooks/use-toast";
 import { useFavourites } from "@/hooks/use-favourites";
 
 interface JobsProps {
-  initialData: JobsResponse;
+  initialJobs: JobsResponse;
+  initialFavouriteJobIds: number[];
 }
 
-const Jobs = ({ initialData }: JobsProps) => {
+const Jobs = ({ initialJobs, initialFavouriteJobIds }: JobsProps) => {
   const {
     jobs,
     selectedJob,
@@ -24,15 +25,13 @@ const Jobs = ({ initialData }: JobsProps) => {
     isLoading,
     isError,
     isFetchingNextPage,
-    favorites,
-    toggleFavorite,
     searchValue,
     handleSearch,
     clearSearch,
     lastElementRef,
-  } = useJobs({ initialData });
-  const { favouriteIds, toggleFavourite } = useFavourites({
-    initialFavouriteIds: favorites,
+  } = useJobs({ initialJobs });
+  const { favouriteJobIds, toggleFavourite } = useFavourites({
+    initialFavouriteJobIds,
   });
   const { isVisible, trigger } = useConfetti({ duration: 7000 });
 
@@ -70,7 +69,7 @@ const Jobs = ({ initialData }: JobsProps) => {
                     title={job.job_title}
                     description={job.description}
                     company={job.company}
-                    isFavorite={favouriteIds.includes(job.id)}
+                    isFavorite={favouriteJobIds.some((id) => id === job.id)}
                     onFavorite={() => toggleFavourite(job.id)}
                     onClick={() => setSelectedJob(job)}
                     isSelected={selectedJob?.id === job.id}
@@ -92,15 +91,11 @@ const Jobs = ({ initialData }: JobsProps) => {
                   title={selectedJob.job_title}
                   description={selectedJob.description}
                   company={selectedJob.company}
-                  isFavorite={favouriteIds.includes(selectedJob.id)}
+                  isFavorite={favouriteJobIds.some(
+                    (id) => id === selectedJob.id
+                  )}
                   onFavorite={() => toggleFavourite(selectedJob.id)}
-                  onApply={() => {
-                    toast({
-                      variant: "default",
-                      title: "Wow! You're hired",
-                    });
-                    trigger();
-                  }}
+                  onApply={() => trigger()}
                 />
               ) : (
                 <div className="rounded-lg border border-muted p-8 bg-card text-center">

@@ -28,7 +28,7 @@ export async function searchJobs(jobTitle: string): Promise<Job[]> {
 }
 
 export async function addToFavourites(jobId: number): Promise<number[]> {
-  const response = await fetch(`/api/jobs/favourites`, {
+  const response = await fetch(`/api/favourites`, {
     method: "POST",
     body: JSON.stringify({ jobId }),
   });
@@ -39,7 +39,7 @@ export async function addToFavourites(jobId: number): Promise<number[]> {
 }
 
 export async function removeFromFavourites(jobId: number): Promise<number[]> {
-  const response = await fetch(`/api/jobs/favourites`, {
+  const response = await fetch(`/api/favourites`, {
     method: "DELETE",
     body: JSON.stringify({ jobId }),
   });

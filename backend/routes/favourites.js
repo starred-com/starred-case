@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const favouritesModel = require('../models/favouritesModel');
 
-router.post('/', async function(req, res) {
+router.post("/", async function (req, res) {
   try {
     const { userId, jobId } = req.body;
     if (!userId || !jobId) {
@@ -10,14 +10,15 @@ router.post('/', async function(req, res) {
     }
     
     await favouritesModel.add(userId, jobId);
-    res.json({ success: true });
+    const favouriteIds = await favouritesModel.getByUserId(userId);
+    return res.json(favouriteIds);
   } catch (error) {
     console.error('Error adding favourite:', error);
     res.status(500).json({ error: 'Failed to add favourite' });
   }
 });
 
-router.delete('/', async function(req, res) {
+router.delete("/", async function (req, res) {
   try {
     const { userId, jobId } = req.body;
     if (!userId || !jobId) {
@@ -25,7 +26,8 @@ router.delete('/', async function(req, res) {
     }
 
     await favouritesModel.remove(userId, jobId);
-    res.json({ success: true });
+    const favouriteIds = await favouritesModel.getByUserId(userId);
+    return res.json(favouriteIds);
   } catch (error) {
     console.error('Error removing favourite:', error);
     res.status(500).json({ error: 'Failed to remove favourite' });
@@ -35,8 +37,8 @@ router.delete('/', async function(req, res) {
 router.get('/:userId', async function(req, res) {
   try {
     const userId = req.params.userId;
-    const favourites = await favouritesModel.getByUserId(userId);
-    res.json({ favourites });
+    const favouriteIds = await favouritesModel.getByUserId(userId);
+    return res.json(favouriteIds);
   } catch (error) {
     console.error('Error getting favourites:', error);
     res.status(500).json({ error: 'Failed to get favourites' });

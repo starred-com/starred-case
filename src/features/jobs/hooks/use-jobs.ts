@@ -7,14 +7,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
 interface UseJobsProps {
-  initialData?: JobsResponse;
+  initialJobs?: JobsResponse;
 }
 
-export const useJobs = ({ initialData }: UseJobsProps = {}) => {
+export const useJobs = ({ initialJobs }: UseJobsProps = {}) => {
   // Core states
   const { toast } = useToast();
   const [selectedJob, setSelectedJob] = useState<Job | null>(
-    initialData?.data[0] ?? null
+    initialJobs?.data[0] ?? null
   );
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<Job[]>([]);
@@ -35,9 +35,9 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
       lastPage.pagination.currentPage < lastPage.pagination.lastPage
         ? lastPage.pagination.currentPage + 1
         : undefined,
-    initialData: initialData
+    initialData: initialJobs
       ? {
-          pages: [initialData],
+          pages: [initialJobs],
           pageParams: [0],
         }
       : undefined,
@@ -106,8 +106,6 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
     hasNextPage,
     isFetchingNextPage,
     lastElementRef,
-    favorites: [], // TODO: Implement
-    toggleFavorite: () => {}, // TODO: Implement
     searchValue,
     handleSearch,
     clearSearch,

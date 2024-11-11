@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "./use-toast";
 
 interface UseConfettiProps {
   duration?: number;
@@ -33,6 +34,10 @@ export function useConfetti({ duration = 7000 }: UseConfettiProps = {}) {
     setTimeout(() => {
       setIsVisible(false);
     }, duration);
+    toast({
+      variant: "default",
+      title: "Wow! You're hired",
+    });
   };
 
   return {

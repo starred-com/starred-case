@@ -1,21 +1,22 @@
 import { useState } from "react";
-import { Job } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { addToFavourites, removeFromFavourites } from "@/lib/api/client";
 import { useToast } from "@/hooks/use-toast";
 
 export const useFavourites = ({
-  initialFavouriteIds,
+  initialFavouriteJobIds,
 }: {
-  initialFavouriteIds: number[];
+  initialFavouriteJobIds: number[];
 }) => {
   const { toast } = useToast();
-  const [favouriteIds, setFavouriteIds] = useState(initialFavouriteIds);
+  const [favouriteJobIds, setFavouriteJobIds] = useState(
+    initialFavouriteJobIds
+  );
 
   const addFavouriteMutation = useMutation({
     mutationFn: (jobId: number) => addToFavourites(jobId),
-    onSuccess: (favouriteIds: number[]) => {
-      setFavouriteIds(favouriteIds);
+    onSuccess: (favouriteJobIds: number[]) => {
+      setFavouriteJobIds(favouriteJobIds);
     },
     onError: () => {
       toast({
@@ -28,8 +29,8 @@ export const useFavourites = ({
 
   const removeFavouriteMutation = useMutation({
     mutationFn: (jobId: number) => removeFromFavourites(jobId),
-    onSuccess: (favouriteIds: number[]) => {
-      setFavouriteIds(favouriteIds);
+    onSuccess: (favouriteJobIds: number[]) => {
+      setFavouriteJobIds(favouriteJobIds);
     },
     onError: () => {
       toast({
@@ -41,7 +42,7 @@ export const useFavourites = ({
   });
 
   const toggleFavourite = (jobId: number) => {
-    const isCurrentlyFavourited = favouriteIds.some((id) => id === jobId);
+    const isCurrentlyFavourited = favouriteJobIds.some((id) => id === jobId);
 
     if (isCurrentlyFavourited) {
       removeFavouriteMutation.mutate(jobId);
@@ -51,7 +52,7 @@ export const useFavourites = ({
   };
 
   return {
-    favouriteIds,
+    favouriteJobIds,
     toggleFavourite,
     isLoading:
       addFavouriteMutation.isPending || removeFavouriteMutation.isPending,

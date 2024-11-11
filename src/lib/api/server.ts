@@ -12,7 +12,6 @@ const DB_SERVER_URL = process.env.DB_SERVER_URL;
 
 export async function getJobs(page: number): Promise<JobsResponse> {
   const response = await fetch(`${JOBS_API_BASE_URL}/jobs?page=${page}`);
-  console.log("response", response);
   if (!response.ok) {
     throw new Error("Failed to fetch jobs");
   }
@@ -27,7 +26,7 @@ export async function getJobDetails(jobId: number): Promise<Job> {
   return response.json();
 }
 
-export async function getJobDetailsForSearch(jobIds: number[]): Promise<Job[]> {
+export async function getJobsById(jobIds: number[]): Promise<Job[]> {
   const jobDetails = await Promise.all(
     jobIds.map((id) => getJobDetails(id))
   ).catch((error) => {
@@ -51,7 +50,7 @@ export async function getJobRecommendations(body: {
   return response.json();
 }
 
-export async function getFavouriteJobs(userId: number): Promise<Job[]> {
+export async function getFavouriteJobIds(userId: number): Promise<number[]> {
   const response = await fetch(`${DB_SERVER_URL}/favourites/${userId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch favourite jobs");
@@ -62,7 +61,7 @@ export async function getFavouriteJobs(userId: number): Promise<Job[]> {
 export async function addToFavourites(
   jobId: number,
   userId: number
-): Promise<void> {
+): Promise<Job[]> {
   const response = await fetch(`${JOBS_API_BASE_URL}/jobs/favourites`, {
     method: "POST",
     body: JSON.stringify({ jobId, userId }),
@@ -76,7 +75,7 @@ export async function addToFavourites(
 export async function removeFromFavourites(
   jobId: number,
   userId: number
-): Promise<void> {
+): Promise<Job[]> {
   const response = await fetch(`${JOBS_API_BASE_URL}/jobs/favourites`, {
     method: "DELETE",
     body: JSON.stringify({ jobId, userId }),

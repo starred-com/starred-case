@@ -5,7 +5,6 @@ const DB_SERVER_URL = process.env.DB_SERVER_URL;
 
 export async function POST(request: Request) {
   try {
-    console.log("POST request received");
     const session = await getServerSession();
 
     if (!session) {
@@ -32,13 +31,9 @@ export async function POST(request: Request) {
       throw new Error("Failed to add favourite");
     }
 
-    // Get updated favourites list
-    const favouritesResponse = await fetch(
-      `${DB_SERVER_URL}/favourites/${session.id}`
-    );
-    const { favourites } = await favouritesResponse.json();
+    const favouriteIds = await response.json();
 
-    return NextResponse.json(favourites);
+    return NextResponse.json(favouriteIds);
   } catch (error) {
     console.error("Error adding favourite:", error);
     return NextResponse.json(
@@ -75,13 +70,9 @@ export async function DELETE(request: Request) {
       throw new Error("Failed to remove favourite");
     }
 
-    // Get updated favourites list
-    const favouritesResponse = await fetch(
-      `${DB_SERVER_URL}/favourites/${session.id}`
-    );
-    const { favourites } = await favouritesResponse.json();
+    const favouriteIds = await response.json();
 
-    return NextResponse.json(favourites);
+    return NextResponse.json(favouriteIds);
   } catch (error) {
     console.error("Error removing favourite:", error);
     return NextResponse.json(
