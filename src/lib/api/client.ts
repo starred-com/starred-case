@@ -26,3 +26,33 @@ export async function searchJobs(jobTitle: string): Promise<Job[]> {
   }
   return response.json();
 }
+
+export async function getFavouriteJobs(): Promise<Job[]> {
+  const response = await fetch(`/api/jobs/favourites`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch favourite jobs');
+  }
+  return response.json();
+}
+
+export async function addToFavourites(jobId: number): Promise<void> {
+  const response = await fetch(`/api/jobs/favourites`, {
+    method: 'POST',
+    body: JSON.stringify({ jobId }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to add to favourites');
+  }
+  return response.json();
+}
+
+export async function removeFromFavourites(jobId: number): Promise<void> {
+  const response = await fetch(`/api/jobs/favourites`, {
+    method: 'DELETE',
+    body: JSON.stringify({ jobId }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to remove from favourites');
+  }
+  return response.json();
+}
