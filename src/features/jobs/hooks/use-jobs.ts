@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
-import { Job, JobsResponse } from '@/types';
-import { getJobs, searchJobs } from '@/lib/api/client';
-import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
-import debounce from 'lodash/debounce';
-import { useMutation } from '@tanstack/react-query';
+import { useCallback, useState } from "react";
+import { Job, JobsResponse } from "@/types";
+import { getJobs, searchJobs } from "@/lib/api/client";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import debounce from "lodash/debounce";
+import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
 interface UseJobsProps {
@@ -13,8 +13,10 @@ interface UseJobsProps {
 export const useJobs = ({ initialData }: UseJobsProps = {}) => {
   // Core states
   const { toast } = useToast();
-  const [selectedJob, setSelectedJob] = useState<Job | null>(initialData?.data[0] ?? null);
-  const [searchValue, setSearchValue] = useState('');
+  const [selectedJob, setSelectedJob] = useState<Job | null>(
+    initialData?.data[0] ?? null
+  );
+  const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<Job[]>([]);
 
   // Infinite scroll setup
@@ -27,16 +29,18 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
     isFetchingNextPage,
     lastElementRef,
   } = useInfiniteScroll<JobsResponse>({
-    queryKey: ['jobs'],
+    queryKey: ["jobs"],
     queryFn: getJobs,
-    getNextPageParam: (lastPage) => 
+    getNextPageParam: (lastPage) =>
       lastPage.pagination.currentPage < lastPage.pagination.lastPage
         ? lastPage.pagination.currentPage + 1
         : undefined,
-    initialData: initialData ? {
-      pages: [initialData],
-      pageParams: [0],
-    } : undefined,
+    initialData: initialData
+      ? {
+          pages: [initialData],
+          pageParams: [0],
+        }
+      : undefined,
     enabled: !searchValue.trim(),
     onError: (error) => {
       toast({
@@ -60,7 +64,7 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
         title: "Search Failed",
         description: "Failed to search jobs. Please try again.",
       });
-    }
+    },
   });
 
   const debouncedSearch = useCallback(
@@ -73,18 +77,24 @@ export const useJobs = ({ initialData }: UseJobsProps = {}) => {
   );
 
   // Debounced search function
-  const handleSearch = useCallback((value: string) => {
-    setSearchValue(value);
-    debouncedSearch(value);
-  }, [debouncedSearch]);
+  const handleSearch = useCallback(
+    (value: string) => {
+      setSearchValue(value);
+      debouncedSearch(value);
+    },
+    [debouncedSearch]
+  );
 
   // Clear search function
   const clearSearch = useCallback(() => {
-    setSearchValue('');
+    setSearchValue("");
   }, []);
 
   // Compute active jobs list
-  const jobs = searchValue ? searchResults : data?.pages.flatMap(page => page.data) ?? [];
+  const jobs =
+    searchValue.trim().length > 2
+      ? searchResults
+      : data?.pages.flatMap((page) => page.data) ?? [];
 
   return {
     jobs,

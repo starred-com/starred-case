@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 const roboto = Roboto_Flex({ subsets: ["latin"] });
 
@@ -18,11 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={cn("dark", roboto.className)}>
         <QueryProvider>
-          <main className="min-h-screen">{children}</main>
+          <main>{children}</main>
+          <Toaster />
         </QueryProvider>
-        <Toaster />
       </body>
     </html>
   );

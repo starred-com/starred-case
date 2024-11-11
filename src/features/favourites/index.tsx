@@ -7,13 +7,17 @@ import { JobCardSkeleton } from "@/components/ui/job-card-skeleton";
 import { cn } from "@/lib/utils";
 import { DetailedJobCard } from "@/components/ui/detailed-job-card";
 import { Job } from "@/types";
+import { Confetti } from "@/components/ui/confetti";
+import { useConfetti } from "@/hooks/use-confetti";
+import { toast } from "@/hooks/use-toast";
 
 const Favourites = ({ initialData }: { initialData: { data: Job[] } }) => {
   const { jobs, selectedJob, setSelectedJob, isLoading, isError } =
     useFavourites({ initialData });
+  const { isVisible, trigger } = useConfetti({ duration: 7000 });
 
   return (
-    <div className="container mx-auto pt-12 px-4 space-y-12 min-h-screen">
+    <div className="relative container mx-auto px-4 pt-12 space-y-12 h-screen overflow-hidden">
       <SearchHeader
         searchValue=""
         onSearch={() => {}}
@@ -25,10 +29,10 @@ const Favourites = ({ initialData }: { initialData: { data: Job[] } }) => {
           Error loading favourite jobs. Please try again later.
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 h-[calc(100vh-20rem)]">
           <div
             className={cn(
-              "h-[calc(100vh-16rem)] overflow-y-auto space-y-4 pr-4",
+              "overflow-y-auto space-y-4 pr-4",
               "scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent"
             )}
           >
@@ -63,9 +67,13 @@ const Favourites = ({ initialData }: { initialData: { data: Job[] } }) => {
                   description={selectedJob.description}
                   company={selectedJob.company}
                   isFavorite={true}
-                  onApply={() =>
-                    window.alert("Apply functionality to be implemented")
-                  }
+                  onApply={() => {
+                    toast({
+                      variant: "default",
+                      title: "Wow! You're hired",
+                    });
+                    trigger();
+                  }}
                 />
               ) : (
                 <div className="rounded-lg border border-muted p-8 bg-card text-center">
@@ -78,6 +86,7 @@ const Favourites = ({ initialData }: { initialData: { data: Job[] } }) => {
           </div>
         </div>
       )}
+      <Confetti isVisible={isVisible} />
     </div>
   );
 };

@@ -6,8 +6,11 @@ import { SearchHeader } from "../../components/ui/search-header";
 import { JobCardSkeleton } from "../../components/ui/job-card-skeleton";
 import { JobsResponse } from "@/types";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { DetailedJobCard } from "../../components/ui/detailed-job-card";
+import { Confetti } from "@/components/ui/confetti";
+import { useConfetti } from "@/hooks/use-confetti";
+import { toast } from "@/hooks/use-toast";
+import { useFavourites } from "@/hooks/use-favourites";
 
 interface JobsProps {
   initialData: JobsResponse;
@@ -28,9 +31,13 @@ const Jobs = ({ initialData }: JobsProps) => {
     clearSearch,
     lastElementRef,
   } = useJobs({ initialData });
+  const { favouriteIds, toggleFavourite } = useFavourites({
+    initialFavouriteIds: favorites,
+  });
+  const { isVisible, trigger } = useConfetti({ duration: 7000 });
 
   return (
-    <div className="container mx-auto pt-12 px-4 space-y-12 min-h-screen">
+    <div className="relative container mx-auto px-4 pt-12 space-y-12 h-screen overflow-hidden">
       <SearchHeader
         searchValue={searchValue}
         onSearch={handleSearch}
@@ -42,10 +49,10 @@ const Jobs = ({ initialData }: JobsProps) => {
           Error loading jobs. Please try again later.
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 h-[calc(100vh-20rem)]">
           <div
             className={cn(
-              "h-[calc(100vh-16rem)] overflow-y-auto space-y-4 pr-4",
+              "overflow-y-auto space-y-4 pr-4",
               "scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent"
             )}
           >
@@ -63,8 +70,8 @@ const Jobs = ({ initialData }: JobsProps) => {
                     title={job.job_title}
                     description={job.description}
                     company={job.company}
-                    isFavorite={favorites.includes(job.id)}
-                    onFavorite={() => toggleFavorite(job.id)}
+                    isFavorite={favouriteIds.includes(job.id)}
+                    onFavorite={() => toggleFavourite(job.id)}
                     onClick={() => setSelectedJob(job)}
                     isSelected={selectedJob?.id === job.id}
                   />
@@ -85,11 +92,15 @@ const Jobs = ({ initialData }: JobsProps) => {
                   title={selectedJob.job_title}
                   description={selectedJob.description}
                   company={selectedJob.company}
-                  isFavorite={favorites.includes(selectedJob.id)}
-                  onFavorite={() => toggleFavorite(selectedJob.id)}
-                  onApply={() =>
-                    window.alert("Apply functionality to be implemented")
-                  }
+                  isFavorite={favouriteIds.includes(selectedJob.id)}
+                  onFavorite={() => toggleFavourite(selectedJob.id)}
+                  onApply={() => {
+                    toast({
+                      variant: "default",
+                      title: "Wow! You're hired",
+                    });
+                    trigger();
+                  }}
                 />
               ) : (
                 <div className="rounded-lg border border-muted p-8 bg-card text-center">
@@ -102,6 +113,7 @@ const Jobs = ({ initialData }: JobsProps) => {
           </div>
         </div>
       )}
+      <Confetti isVisible={isVisible} />
     </div>
   );
 };

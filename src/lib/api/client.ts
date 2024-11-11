@@ -10,49 +10,41 @@ import { JobsResponse, Job } from "@/types";
 export async function getJobs(page: number = 0): Promise<JobsResponse> {
   const response = await fetch(`/api/jobs?page=${page}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch jobs');
+    throw new Error("Failed to fetch jobs");
   }
   return response.json();
 }
 
 export async function searchJobs(jobTitle: string): Promise<Job[]> {
   const response = await fetch(`/api/jobs/search`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ jobTitle }),
   });
   if (!response.ok) {
-    throw new Error('Failed to search jobs');
+    throw new Error("Failed to search jobs");
   }
   return response.json();
 }
 
-export async function getFavouriteJobs(): Promise<Job[]> {
-  const response = await fetch(`/api/jobs/favourites`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch favourite jobs');
-  }
-  return response.json();
-}
-
-export async function addToFavourites(jobId: number): Promise<void> {
+export async function addToFavourites(jobId: number): Promise<number[]> {
   const response = await fetch(`/api/jobs/favourites`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({ jobId }),
   });
   if (!response.ok) {
-    throw new Error('Failed to add to favourites');
+    throw new Error("Failed to add to favourites");
   }
   return response.json();
 }
 
-export async function removeFromFavourites(jobId: number): Promise<void> {
+export async function removeFromFavourites(jobId: number): Promise<number[]> {
   const response = await fetch(`/api/jobs/favourites`, {
-    method: 'DELETE',
+    method: "DELETE",
     body: JSON.stringify({ jobId }),
   });
   if (!response.ok) {
-    throw new Error('Failed to remove from favourites');
+    throw new Error("Failed to remove from favourites");
   }
   return response.json();
 }
