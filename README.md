@@ -65,7 +65,7 @@ We tested this project with node version 20 and `npm` as the package manager, bu
 
 ## Architecture diagram task
 
-While the coding task gives us the opportunity to have a discussion about your choices, we know you're probably used to working with bigger tasks. To avoid asking you to develop real features for us, instead we ask you to bring an architecture drawing of a solution you are proud of. Ideally something that is still fresh in your mind, so you don't have to spend hours creating it.
+While the coding task gives us the opportunity to have a discussion about your choices, we know you're probably used to working with bigger tasks. To avoid asking you to develop real features for us, instead we ask you to bring an architecture drawing of a solution you are proud of. This could be a side project you recently worked on or fictional system. Ideally something that is still fresh in your mind, so you don't have to spend hours creating it.
 
 The contents and scope of the diagram are entirely up to you: if the solution contains too many moving parts you can keep it simple by outlining only the most important parts and then walking us through it later, alternatively if you enjoy creating diagrams, you can also cover every aspect of the solution.
 
