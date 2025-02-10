@@ -2,21 +2,6 @@ const { faker } = require('@faker-js/faker');
 const fs = require('fs');
 const db = require('./db.js');
 
-function generateJobs(num) {
-  const jobs = [];
-  for (let i = 0; i <= num; i++) {
-    jobs.push({
-      title: faker.person.jobTitle(),
-      description: faker.person.jobDescriptor(),
-      type: faker.person.jobType(),
-      area: faker.person.jobArea(),
-      state: faker.location.state(),
-      streetAddress: faker.location.streetAddress(),
-    })
-  }
-  return jobs
-}
-
 function generateUsers(num) {
   const users = [];
   for (let i = 0; i <= num; i++) {

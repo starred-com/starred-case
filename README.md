@@ -24,7 +24,7 @@ When we meet to discuss the case, we will ask you to present your solution in th
 
 Starred.com is a candidate-centric recruitment platform where candidates can find new opportunities, practice for interviews and track their recruitment progress. In this task you will build an primitive version of job searching and reporting about what jobs candidates search for.
 
-See the next section for the description of a starting codebase and endpoint that you can use. However remember that it's there to get you started, so if you feel like doing it your own way simply go ahead.
+See the next section for the description of a starting codebase and endpoint that you can use. However remember that it's there to get you started, so if you feel like doing it your own way simply go ahead. That includes completely disregarding the starter project and using any tech/framework you see as appropriate.
 
 You'll be implementing functionality for the candidates. The bullet points are intended as user actions so it is up to you how far(or not) you want to go with each point. 
 
@@ -65,7 +65,7 @@ We tested this project with node version 20 and `npm` as the package manager, bu
 
 ## Architecture diagram task
 
-While the coding task gives us the opportunity to have a discussion about your choices, we know you're probably used to working with bigger tasks. To avoid asking you to develop real features for us, instead we ask you to bring an architecture drawing of a solution you are proud of. Ideally something that is still fresh in your mind, so you don't have to spend hours creating it.
+While the coding task gives us the opportunity to have a discussion about your choices, we know you're probably used to working with bigger tasks. To avoid asking you to develop real features for us, instead we ask you to bring an architecture drawing of a solution you are proud of. This could be a side project you recently worked on or fictional system. Ideally something that is still fresh in your mind, so you don't have to spend hours creating it.
 
 The contents and scope of the diagram are entirely up to you: if the solution contains too many moving parts you can keep it simple by outlining only the most important parts and then walking us through it later, alternatively if you enjoy creating diagrams, you can also cover every aspect of the solution.
 
