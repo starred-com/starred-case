@@ -24,7 +24,7 @@ When we meet to discuss the case, we will ask you to present your solution in th
 
 Starred.com is a candidate-centric recruitment platform where candidates can find new opportunities, practice for interviews and track their recruitment progress. In this task you will build an primitive version of job searching and reporting about what jobs candidates search for.
 
-See the next section for the description of a starting codebase and endpoint that you can use. However remember that it's there to get you started, so if you feel like doing it your own way simply go ahead.
+See the next section for the description of a starting codebase and endpoint that you can use. However remember that it's there to get you started, so if you feel like doing it your own way simply go ahead. That includes completely disregarding the starter project and using any tech/framework you see as appropriate.
 
 You'll be implementing functionality for the candidates. The bullet points are intended as user actions so it is up to you how far(or not) you want to go with each point. 
 
